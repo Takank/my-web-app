@@ -15,3 +15,45 @@
             'onReady': onPlayerReady,
             'onStateChange': onPlayerStateChange
           }
+        });
+      }
+
+      function onPlayerReady(event) {
+        // 動画の全体の長さを取得
+        var videoDuration = player.getDuration();
+        // 再生位置をランダムに設定
+        var playPosition = Math.floor(Math.random() * videoDuration);
+        player.seekTo(playPosition, true);
+        event.target.playVideo();
+      }
+
+      var done = false;
+      function onPlayerStateChange(event) {
+        if (event.data == YT.PlayerState.PLAYING && !done) {
+          // 動画の全体の長さから現在の再生位置を引いたものを再生時間とする
+          var playDuration = player.getDuration() - player.getCurrentTime();
+          setTimeout(stopVideo, Math.random() * playDuration * 1000); // 再生時間をランダムにする
+          done = true;
+        }
+        else if (event.data == YT.PlayerState.ENDED) {
+          setTimeout(startVideo, Math.random() * 60000); // 再生開始時間をランダムにする
+          done = false;
+        }
+      }
+      function stopVideo() {
+        player.stopVideo();
+      }
+      function startVideo() {
+        // 動画の全体の長さを取得
+        var videoDuration =
+        var videoDuration = player.getDuration();
+        // 再生位置をランダムに設定
+        var playPosition = Math.floor(Math.random() * videoDuration);
+        player.seekTo(playPosition, true);
+        player.playVideo();
+      }
+    </script>
+    
+    <script src="https://www.youtube.com/iframe_api"></script>
+</body>
+</html>
