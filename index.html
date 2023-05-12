@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <!-- 1. The <iframe> (and video player) will replace this <div> tag. -->
+    <div id="player"></div>
+
+    <script>
+      var player;
+      function onYouTubeIframeAPIReady() {
+        player = new YT.Player('player', {
+          height: '360',
+          width: '640',
+          videoId: 'H_7q-JuhsjY&t=825s&ab_channel=SAKURA4600', // ここに動画IDを入力してください。
+          events: {
+            'onReady': onPlayerReady,
+            'onStateChange': onPlayerStateChange
+          }
+        });
+      }
+
+      function onPlayerReady(event) {
+        event.target.playVideo();
+      }
+
+      var done = false;
+      function onPlayerStateChange(event) {
+        if (event.data == YT.PlayerState.PLAYING && !done) {
+          setTimeout(stopVideo, Math.random() * 60000); // 再生時間をランダムにする
+          done = true;
+        }
+        else if (event.data == YT.PlayerState.ENDED) {
+          setTimeout(startVideo, Math.random() * 60000); // 再生開始時間をランダムにする
+          done = false;
+        }
+      }
+      function stopVideo() {
+        player.stopVideo();
+      }
+      function startVideo() {
+        player.playVideo();
+      }
+    </script>
+    
+    <script src="https://www.youtube.com/iframe_api"></script>
+</body>
+</html>
