@@ -6,6 +6,7 @@
 
     <script>
       var player;
+      var videoDuration;
       function onYouTubeIframeAPIReady() {
         player = new YT.Player('player', {
           height: '360',
@@ -19,35 +20,31 @@
       }
 
       function onPlayerReady(event) {
-        // 動画の全体の長さを取得
-        var videoDuration = player.getDuration();
-        // 再生位置をランダムに設定
-        var playPosition = Math.floor(Math.random() * videoDuration);
-        player.seekTo(playPosition, true);
-        event.target.playVideo();
+        // Wait for the video data to load before trying to play the video.
+        setTimeout(function() {
+          videoDuration = player.getDuration();
+          // 再生位置をランダムに設定
+          var playPosition = Math.floor(Math.random() * videoDuration);
+          player.seekTo(playPosition, true);
+          player.playVideo();
+        }, 2000); // Wait for 2 seconds. You may need to adjust this delay.
       }
 
-      var done = false;
       function onPlayerStateChange(event) {
-        if (event.data == YT.PlayerState.PLAYING && !done) {
-          // 動画の全体の長さから現在の再生位置を引いたものを再生時間とする
-          var playDuration = player.getDuration() - player.getCurrentTime();
-          setTimeout(stopVideo, Math.random() * playDuration * 1000); // 再生時間をランダムにする
-          done = true;
+        if (event.data == YT.PlayerState.PLAYING) {
+          setTimeout(stopVideo, Math.floor(Math.random() * (videoDuration - player.getCurrentTime()) * 1000));
         }
         else if (event.data == YT.PlayerState.ENDED) {
-          setTimeout(startVideo, Math.random() * 60000); // 再生開始時間をランダムにする
-          done = false;
+          setTimeout(startVideo, Math.floor(Math.random() * 60000));
         }
       }
+
       function stopVideo() {
         player.stopVideo();
       }
+
       function startVideo() {
-        // 動画の全体の長さを取得
-        var videoDuration =
-        var videoDuration = player.getDuration();
-        // 再生位置をランダムに設定
+        videoDuration = player.getDuration();
         var playPosition = Math.floor(Math.random() * videoDuration);
         player.seekTo(playPosition, true);
         player.playVideo();
