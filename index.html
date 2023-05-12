@@ -6,50 +6,12 @@
 
     <script>
       var player;
-      var startTimeout;
-      var stopTimeout;
-
       function onYouTubeIframeAPIReady() {
         player = new YT.Player('player', {
           height: '360',
           width: '640',
-          videoId: 'BtsQEZVSiwE&ab_channel=ViVichannel', // ここに動画IDを入力してください。
+          videoId: 'H_7q-JuhsjY&t=825s&ab_channel=SAKURA4600', // ここに動画IDを入力してください。
           events: {
             'onReady': onPlayerReady,
             'onStateChange': onPlayerStateChange
           }
-        });
-      }
-
-      function onPlayerReady(event) {
-        startRandomPlayback();
-      }
-
-      function onPlayerStateChange(event) {
-        if (event.data == YT.PlayerState.ENDED) {
-          clearTimeout(stopTimeout);
-          startRandomPlayback();
-        }
-      }
-
-      function startRandomPlayback() {
-        var videoDuration = player.getDuration() * 1000; // getDuration() returns duration in seconds, we need milliseconds
-        var startMillis = Math.random() * videoDuration;
-        startTimeout = setTimeout(function() {
-          player.playVideo();
-          var stopMillis = Math.random() * (videoDuration - startMillis);
-          stopTimeout = setTimeout(function() {
-            player.stopVideo();
-            startRandomPlayback();
-          }, stopMillis);
-        }, startMillis);
-      }
-      
-      function stopVideo() {
-        player.stopVideo();
-      }
-    </script>
-    
-    <script src="https://www.youtube.com/iframe_api"></script>
-</body>
-</html>
